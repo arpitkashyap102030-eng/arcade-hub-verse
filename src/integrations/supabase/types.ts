@@ -14,13 +14,149 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      game_rounds: {
+        Row: {
+          bet: number
+          created_at: string
+          details: Json
+          game_slug: string
+          id: string
+          multiplier: number
+          payout: number
+          user_id: string
+        }
+        Insert: {
+          bet: number
+          created_at?: string
+          details?: Json
+          game_slug: string
+          id?: string
+          multiplier?: number
+          payout?: number
+          user_id: string
+        }
+        Update: {
+          bet?: number
+          created_at?: string
+          details?: Json
+          game_slug?: string
+          id?: string
+          multiplier?: number
+          payout?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      players: {
+        Row: {
+          balance: number
+          created_at: string
+          id: string
+          last_bonus_at: string | null
+          total_wagered: number
+          total_won: number
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          id: string
+          last_bonus_at?: string | null
+          total_wagered?: number
+          total_won?: number
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          id?: string
+          last_bonus_at?: string | null
+          total_wagered?: number
+          total_won?: number
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      recent_big_wins: {
+        Row: {
+          created_at: string | null
+          game_slug: string | null
+          id: string | null
+          masked_player: string | null
+          multiplier: number | null
+          payout: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      claim_daily_bonus: {
+        Args: never
+        Returns: {
+          balance: number
+          created_at: string
+          id: string
+          last_bonus_at: string | null
+          total_wagered: number
+          total_won: number
+          updated_at: string
+          username: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      ensure_player: {
+        Args: { _username?: string }
+        Returns: {
+          balance: number
+          created_at: string
+          id: string
+          last_bonus_at: string | null
+          total_wagered: number
+          total_won: number
+          updated_at: string
+          username: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      play_round: {
+        Args: {
+          _bet: number
+          _details?: Json
+          _game_slug: string
+          _multiplier: number
+        }
+        Returns: {
+          balance: number
+          created_at: string
+          id: string
+          last_bonus_at: string | null
+          total_wagered: number
+          total_won: number
+          updated_at: string
+          username: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
       [_ in never]: never

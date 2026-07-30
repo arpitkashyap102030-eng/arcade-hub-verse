@@ -80,19 +80,33 @@ export type Database = {
         }
         Relationships: []
       }
-    }
-    Views: {
-      recent_big_wins: {
+      public_wins: {
         Row: {
-          created_at: string | null
-          game_slug: string | null
-          id: string | null
-          masked_player: string | null
-          multiplier: number | null
-          payout: number | null
+          created_at: string
+          game_slug: string
+          id: string
+          masked_player: string
+          multiplier: number
+        }
+        Insert: {
+          created_at?: string
+          game_slug: string
+          id?: string
+          masked_player: string
+          multiplier: number
+        }
+        Update: {
+          created_at?: string
+          game_slug?: string
+          id?: string
+          masked_player?: string
+          multiplier?: number
         }
         Relationships: []
       }
+    }
+    Views: {
+      [_ in never]: never
     }
     Functions: {
       claim_daily_bonus: {

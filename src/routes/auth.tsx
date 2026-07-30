@@ -37,7 +37,7 @@ function Auth() {
     setBusy(true);
     try {
       if (signup) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -46,6 +46,20 @@ function Auth() {
           },
         });
         if (error) throw error;
+
+        // No session means the project still requires email confirmation, or the
+        // email already exists — try signing in so the user isn't left stranded.
+        if (!data.session) {
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          if (signInError) {
+            toast.info("Check your inbox to confirm your email, then sign in.");
+            setSignup(false);
+            return;
+          }
+        }
         toast.success("Account created — welcome to the arcade!");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -53,6 +67,7 @@ function Auth() {
         toast.success("Signed in");
       }
       navigate({ to: "/" });
+
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {

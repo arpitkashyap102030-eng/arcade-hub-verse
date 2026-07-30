@@ -12,6 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as QuestRouteImport } from './routes/quest'
+import { Route as RaffleRouteImport } from './routes/raffle'
+import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as WheelRouteImport } from './routes/wheel'
 import { Route as GameSlugRouteImport } from './routes/game.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +33,26 @@ const ExploreRoute = ExploreRouteImport.update({
   path: '/explore',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuestRoute = QuestRouteImport.update({
+  id: '/quest',
+  path: '/quest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RaffleRoute = RaffleRouteImport.update({
+  id: '/raffle',
+  path: '/raffle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WheelRoute = WheelRouteImport.update({
+  id: '/wheel',
+  path: '/wheel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GameSlugRoute = GameSlugRouteImport.update({
   id: '/game/$slug',
   path: '/game/$slug',
@@ -39,12 +63,20 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/quest': typeof QuestRoute
+  '/raffle': typeof RaffleRoute
+  '/wallet': typeof WalletRoute
+  '/wheel': typeof WheelRoute
   '/game/$slug': typeof GameSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/quest': typeof QuestRoute
+  '/raffle': typeof RaffleRoute
+  '/wallet': typeof WalletRoute
+  '/wheel': typeof WheelRoute
   '/game/$slug': typeof GameSlugRoute
 }
 export interface FileRoutesById {
@@ -52,20 +84,53 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/quest': typeof QuestRoute
+  '/raffle': typeof RaffleRoute
+  '/wallet': typeof WalletRoute
+  '/wheel': typeof WheelRoute
   '/game/$slug': typeof GameSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/explore' | '/game/$slug'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/quest'
+    | '/raffle'
+    | '/wallet'
+    | '/wheel'
+    | '/game/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/explore' | '/game/$slug'
-  id: '__root__' | '/' | '/auth' | '/explore' | '/game/$slug'
+  to:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/quest'
+    | '/raffle'
+    | '/wallet'
+    | '/wheel'
+    | '/game/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/quest'
+    | '/raffle'
+    | '/wallet'
+    | '/wheel'
+    | '/game/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   ExploreRoute: typeof ExploreRoute
+  QuestRoute: typeof QuestRoute
+  RaffleRoute: typeof RaffleRoute
+  WalletRoute: typeof WalletRoute
+  WheelRoute: typeof WheelRoute
   GameSlugRoute: typeof GameSlugRoute
 }
 
@@ -92,6 +157,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExploreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quest': {
+      id: '/quest'
+      path: '/quest'
+      fullPath: '/quest'
+      preLoaderRoute: typeof QuestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/raffle': {
+      id: '/raffle'
+      path: '/raffle'
+      fullPath: '/raffle'
+      preLoaderRoute: typeof RaffleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wheel': {
+      id: '/wheel'
+      path: '/wheel'
+      fullPath: '/wheel'
+      preLoaderRoute: typeof WheelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/game/$slug': {
       id: '/game/$slug'
       path: '/game/$slug'
@@ -106,6 +199,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   ExploreRoute: ExploreRoute,
+  QuestRoute: QuestRoute,
+  RaffleRoute: RaffleRoute,
+  WalletRoute: WalletRoute,
+  WheelRoute: WheelRoute,
   GameSlugRoute: GameSlugRoute,
 }
 export const routeTree = rootRouteImport

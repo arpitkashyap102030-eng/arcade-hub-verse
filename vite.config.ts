@@ -6,13 +6,16 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// APK_BUILD=1 produces a client-only SPA bundle that the Android app ships inside
+// the APK (all data is fetched from the backend directly by the browser).
+const isApkBuild = process.env["APK_BUILD"] === "1";
+
 export default defineConfig({
-  tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
-    // SPA shell so the Android app can run the whole UI offline from the APK bundle
-    // (all data comes straight from the backend in the browser, no server functions).
-    spa: { enabled: true },
-  },
+  tanstackStart: isApkBuild
+    ? { spa: { enabled: true } }
+    : {
+        // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
+        // nitro/vite builds from this
+        server: { entry: "server" },
+      },
 });

@@ -28,7 +28,7 @@ APK yahan milegi: `build-output/3cr-arcade-debug.apk`
 Published URL par point karna ho to:
 
 ```bash
-npm run apk -- https://arcade-hub-verse.lovable.app
+npm run apk
 ```
 
 ## Manual steps (agar script na chale)

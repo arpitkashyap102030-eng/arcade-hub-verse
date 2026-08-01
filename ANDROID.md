@@ -25,17 +25,12 @@ scripts\build-apk.bat
 Script khud install, `cap add android`, `cap sync` aur Gradle debug build kar deta hai.
 APK yahan milegi: `build-output/3cr-arcade-debug.apk`
 
-Published URL par point karna ho to:
-
-```bash
-npm run apk -- https://arcade-hub-verse.lovable.app
-```
-
 ## Manual steps (agar script na chale)
 
 ```bash
 npm install            # ya: bun install
 npx cap add android    # sirf pehli baar
+npx vite build --config vite.apk.config.ts
 npx cap sync android
 npx cap open android   # Android Studio khul jayega
 ```
@@ -53,7 +48,7 @@ cd android && ./gradlew assembleDebug
 
 ## Zaroori baat
 
-`capacitor.config.ts` me `server.url` set hai. Abhi wo **preview URL** par point kar raha hai. App publish karne ke baad us URL ko apne published `.lovable.app` (ya custom domain) se badal do, phir `npx cap sync android` dobara chalao — warna APK preview par hi chalti rahegi.
+Poori app APK ke andar bundle hoti hai (`dist-apk`), koi website URL load nahi hoti. Sirf coins/login ka data internet se backend se aata hai. UI badalne ke baad `npm run apk` dobara chalao.
 
 Play Store ke liye release build chahiye (signed AAB): Android Studio → **Build → Generate Signed Bundle / APK**.
 

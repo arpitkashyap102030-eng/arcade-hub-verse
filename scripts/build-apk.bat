@@ -7,11 +7,6 @@ cd /d "%~dp0.."
 where node >nul 2>&1 || (echo Node.js nahi mila - https://nodejs.org & exit /b 1)
 where java >nul 2>&1 || (echo Java/JDK nahi mila - Android Studio install karo & exit /b 1)
 
-if not "%~1"=="" (
-  echo server.url set kar raha hoon: %~1
-  node -e "const fs=require('fs'),f='capacitor.config.ts';let s=fs.readFileSync(f,'utf8');s=s.replace(/url:\s*\".*?\"/,'url: \"%~1\"');fs.writeFileSync(f,s);"
-)
-
 echo Dependencies install...
 call npm install || exit /b 1
 
@@ -20,7 +15,7 @@ if not exist android (
   call npx --yes cap add android || exit /b 1
 )
 
-if not exist dist mkdir dist
+call npx --yes vite build --config vite.apk.config.ts || exit /b 1
 call npx --yes cap sync android || exit /b 1
 
 echo Gradle build (pehli baar 5-10 min)...

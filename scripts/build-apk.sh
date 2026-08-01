@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # One-click Android debug APK builder for 3CR Arcade.
-# Usage:  ./scripts/build-apk.sh            (uses server.url from capacitor.config.ts)
-#         ./scripts/build-apk.sh https://your-app.lovable.app
+# Usage:  ./scripts/build-apk.sh
+# Poori app APK ke andar bundle hoti hai; sirf data backend se aata hai.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -22,17 +22,6 @@ fi
 [ -n "${ANDROID_HOME:-}${ANDROID_SDK_ROOT:-}" ] || \
   die "Android SDK nahi mila. Android Studio kholo → SDK Manager → SDK install karo, ya ANDROID_HOME set karo."
 
-# --- optional: override the URL the app wraps -------------------------------
-if [ "${1:-}" != "" ]; then
-  say "server.url set kar raha hoon: $1"
-  node -e '
-    const fs=require("fs"),f="capacitor.config.ts";
-    let s=fs.readFileSync(f,"utf8");
-    s=s.replace(/url:\s*".*?"/, `url: "${process.argv[1]}"`);
-    fs.writeFileSync(f,s);
-  ' "$1"
-fi
-
 # --- install + sync ---------------------------------------------------------
 say "Dependencies install kar raha hoon"
 if [ -f bun.lockb ] || [ -f bun.lock ]; then bun install; else npm install; fi
@@ -42,7 +31,9 @@ if [ ! -d android ]; then
   npx --yes cap add android
 fi
 
-mkdir -p dist
+say "App bundle build kar raha hoon (APK ke andar chalega)"
+npx --yes vite build --config vite.apk.config.ts
+
 say "Capacitor sync"
 npx --yes cap sync android
 

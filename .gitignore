@@ -33,3 +33,4 @@ dist-ssr
 android/
 dist/
 build-output/
+dist-apk/

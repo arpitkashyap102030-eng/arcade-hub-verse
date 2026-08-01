@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">3CR Arcade</string>
+    <string name="title_activity_main">3CR Arcade</string>
+    <string name="package_name">app.lovable.threecrarcade</string>
+    <string name="custom_url_scheme">app.lovable.threecrarcade</string>
+</resources>

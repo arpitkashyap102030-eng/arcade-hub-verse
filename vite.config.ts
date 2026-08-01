@@ -11,5 +11,8 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    // SPA shell so the Android app can run the whole UI offline from the APK bundle
+    // (all data comes straight from the backend in the browser, no server functions).
+    spa: { enabled: true },
   },
 });

@@ -8,7 +8,30 @@ App ko Capacitor se Android app me wrap kar diya gaya hai. APK compile aapke com
 2. Lovable me **GitHub → Export to GitHub** karke project apne PC par clone karo.
 3. Terminal me project folder kholo.
 
-## Steps
+## One-click script (sabse aasan)
+
+Project folder me terminal kholo aur chalao:
+
+```bash
+npm run apk
+```
+
+Windows par:
+
+```bat
+scripts\build-apk.bat
+```
+
+Script khud install, `cap add android`, `cap sync` aur Gradle debug build kar deta hai.
+APK yahan milegi: `build-output/3cr-arcade-debug.apk`
+
+Published URL par point karna ho to:
+
+```bash
+npm run apk -- https://arcade-hub-verse.lovable.app
+```
+
+## Manual steps (agar script na chale)
 
 ```bash
 npm install            # ya: bun install

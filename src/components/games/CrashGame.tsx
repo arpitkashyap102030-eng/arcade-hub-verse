@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import type { GameDef } from "@/lib/games";
 import { formatCoins, rollCrashPoint } from "@/lib/games";
+import { playSfx } from "@/lib/sound";
 
 type Props = {
   game: GameDef;
@@ -58,6 +59,7 @@ export function CrashGame({ game, bet, balance, busy, settle }: Props) {
   const launch = () => {
     if (bet > balance) return toast.error("Not enough coins");
     crashAt.current = rollCrashPoint();
+    playSfx("start");
     setMult(1);
     setPhase("flying");
     start.current = performance.now();

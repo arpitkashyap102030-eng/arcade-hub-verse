@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { formatCoins, HOUSE_EDGE } from "@/lib/games";
+import { playSfx } from "@/lib/sound";
 
 type Props = {
   bet: number;
@@ -58,6 +59,7 @@ export function ColorGame({ bet, balance, busy, settle }: Props) {
     pick?.kind === p.kind && String(pick.value) === String(p.value);
 
   const trade = async () => {
+    playSfx("reveal");
     if (!pick) return toast.error("Pick a colour or number first");
     if (bet > balance) return toast.error("Not enough coins");
 

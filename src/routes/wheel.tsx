@@ -6,6 +6,7 @@ import { SignInGate } from "@/components/SignInGate";
 import { useDailyBonus, usePlayer, useSession } from "@/lib/player";
 import { formatCoins } from "@/lib/games";
 import wheelImg from "@/assets/wheel.png";
+import { playSfx } from "@/lib/sound";
 
 const SEGMENTS = [100, 250, 500, 1700, 300, 150, 800, 400];
 
@@ -36,6 +37,7 @@ function Wheel() {
   const ready = Date.now() >= readyAt;
 
   const spin = async () => {
+    playSfx("bonus");
     if (spinning) return;
     setSpinning(true);
     setAngle((a) => a + 1440 + Math.floor(Math.random() * 360));

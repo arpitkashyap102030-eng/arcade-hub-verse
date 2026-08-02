@@ -26,7 +26,12 @@ import logo3cr from "@/assets/logo-3cr.png";
 function SoundToggle() {
   const [on, setOn] = useState(true);
 
-  useEffect(() => onSoundChange(setOn), []);
+  useEffect(() => {
+    const off = onSoundChange(setOn);
+    return () => {
+      off();
+    };
+  }, []);
   useEffect(() => setOn(isSoundOn()), []);
 
   return (

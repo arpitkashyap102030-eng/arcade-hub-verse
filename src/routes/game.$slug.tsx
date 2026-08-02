@@ -87,9 +87,11 @@ function GamePage() {
               <p className="truncate text-xs text-muted-foreground">
                 {game.studio} · {game.tagline}
               </p>
-              <span className="label-mono mt-1.5 inline-block rounded-full border border-accent/50 bg-accent/15 px-2 py-1 text-accent">
-                Balance {formatCoins(balance)}
-              </span>
+              {user && (
+                <span className="label-mono mt-1.5 inline-block rounded-full border border-accent/50 bg-accent/15 px-2 py-1 text-accent">
+                  Balance {formatCoins(balance)}
+                </span>
+              )}
             </div>
           </div>
         </div>

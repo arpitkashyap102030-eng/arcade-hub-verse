@@ -66,21 +66,34 @@ function GamePage() {
           Lobby
         </Link>
 
-        <div className="flex items-center gap-3">
-          <img
-            src={game.image}
-            alt=""
-            width={512}
-            height={512}
-            className="size-14 rounded-lg border border-border object-cover"
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-surface-low p-3">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-30"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 90% 10%, var(--glow-primary), transparent 55%)",
+            }}
           />
-          <div className="min-w-0">
-            <h1 className="truncate font-display text-2xl font-extrabold">{game.name}</h1>
-            <p className="truncate text-xs text-muted-foreground">
-              {game.studio} · {game.tagline}
-            </p>
+          <div className="relative flex items-center gap-3">
+            <img
+              src={game.image}
+              alt=""
+              width={512}
+              height={512}
+              className="size-16 rounded-xl border border-border object-cover shadow-[var(--shadow-glow)]"
+            />
+            <div className="min-w-0">
+              <h1 className="truncate font-display text-2xl font-extrabold">{game.name}</h1>
+              <p className="truncate text-xs text-muted-foreground">
+                {game.studio} · {game.tagline}
+              </p>
+              <span className="label-mono mt-1.5 inline-block rounded-full border border-accent/50 bg-accent/15 px-2 py-1 text-accent">
+                Balance {formatCoins(balance)}
+              </span>
+            </div>
           </div>
         </div>
+
 
         <div className="mt-4 space-y-3">
           {!user ? (

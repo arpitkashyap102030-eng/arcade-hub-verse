@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { usePlayer, useSession } from "@/lib/player";
 import { formatCoins } from "@/lib/games";
 import wheelImg from "@/assets/wheel.png";
+import logo3cr from "@/assets/logo-3cr.png";
 
 function TopBar() {
   const { user } = useSession();
@@ -13,9 +14,13 @@ function TopBar() {
   return (
     <header className="sticky top-0 z-50 flex h-14 w-full items-center justify-between border-b border-border bg-background px-3">
       <Link to="/" className="flex items-center gap-2">
-        <span className="font-display text-2xl font-extrabold tracking-tighter text-foreground">
-          3CR
-        </span>
+        <img
+          src={logo3cr}
+          alt="3CR Arcade"
+          width={96}
+          height={40}
+          className="h-8 w-auto object-contain"
+        />
         <span className="label-mono rounded-sm bg-surface-high px-1.5 py-1 text-muted-foreground">
           Arcade
         </span>

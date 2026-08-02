@@ -1,11 +1,50 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import type { ReactNode } from "react";
-import { Coins, Grid3x3, Search, Ticket, ClipboardList, LogOut } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
+import {
+  Coins,
+  Grid3x3,
+  Search,
+  Ticket,
+  ClipboardList,
+  LogOut,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { usePlayer, useSession } from "@/lib/player";
 import { formatCoins } from "@/lib/games";
+import {
+  attachGlobalClickSfx,
+  initSound,
+  isSoundOn,
+  onSoundChange,
+  toggleSound,
+} from "@/lib/sound";
 import wheelImg from "@/assets/wheel.png";
 import logo3cr from "@/assets/logo-3cr.png";
+
+function SoundToggle() {
+  const [on, setOn] = useState(true);
+
+  useEffect(() => onSoundChange(setOn), []);
+  useEffect(() => setOn(isSoundOn()), []);
+
+  return (
+    <button
+      type="button"
+      data-sfx="off"
+      onClick={() => toggleSound()}
+      aria-label={on ? "Mute sound effects" : "Unmute sound effects"}
+      className="rounded-md border border-border p-2 text-muted-foreground transition-colors hover:text-foreground"
+    >
+      {on ? (
+        <Volume2 className="size-4 text-primary" aria-hidden />
+      ) : (
+        <VolumeX className="size-4" aria-hidden />
+      )}
+    </button>
+  );
+}
 
 function TopBar() {
   const { user } = useSession();

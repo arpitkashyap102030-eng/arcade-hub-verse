@@ -8,8 +8,9 @@ import cricketx from "@/assets/game-cricketx.jpg";
 import goRush from "@/assets/game-go-rush.jpg";
 import chickenDash from "@/assets/game-chicken-dash.jpg";
 import dice from "@/assets/game-dice.jpg";
+import colorTrading from "@/assets/game-color-trading.jpg";
 
-export type Engine = "crash" | "road" | "tower" | "mines" | "dice";
+export type Engine = "crash" | "road" | "tower" | "mines" | "dice" | "color";
 export type Category = "crash" | "table" | "hot" | "slot" | "live" | "fishing";
 
 export type GameDef = {
@@ -125,7 +126,19 @@ export const GAMES: GameDef[] = [
     tagline: "Set your odds, roll under the line.",
     config: { icon: "🎲" },
   },
+  {
+    slug: "color-trading",
+    name: "Colour Trading",
+    studio: "3CR",
+    image: colorTrading,
+    engine: "color",
+    categories: ["table", "hot", "live"],
+    tagline: "Predict green, red or violet each period.",
+    config: { icon: "🟢" },
+  },
 ];
+
+export const COLOR_TRADING_SLUG = "color-trading";
 
 export const HOUSE_EDGE = 0.99;
 

@@ -10,6 +10,7 @@ import { RoadGame } from "@/components/games/RoadGame";
 import { TowerGame } from "@/components/games/TowerGame";
 import { MinesGame } from "@/components/games/MinesGame";
 import { DiceGame } from "@/components/games/DiceGame";
+import { ColorGame } from "@/components/games/ColorGame";
 import { GAMES, getGame, formatCoins } from "@/lib/games";
 import { usePlayRound, usePlayer, useSession, useHistory } from "@/lib/player";
 
@@ -91,6 +92,7 @@ function GamePage() {
               {game.engine === "tower" && <TowerGame game={game} {...engineProps} />}
               {game.engine === "mines" && <MinesGame {...engineProps} />}
               {game.engine === "dice" && <DiceGame {...engineProps} />}
+              {game.engine === "color" && <ColorGame {...engineProps} />}
 
               <BetPanel bet={bet} onBet={setBet} balance={balance} disabled={play.isPending} />
             </>

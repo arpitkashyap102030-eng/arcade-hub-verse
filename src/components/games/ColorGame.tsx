@@ -15,7 +15,6 @@ type Pick =
 
 const GREEN = [1, 3, 7, 9];
 const RED = [2, 4, 6, 8];
-const VIOLET = [0, 5];
 
 /** Colour of a drawn number. 0 and 5 are violet + a half-paying colour. */
 function colorsOf(n: number): ("green" | "red" | "violet")[] {
@@ -80,9 +79,6 @@ export function ColorGame({ bet, balance, busy, settle }: Props) {
     if (mult > 0) toast.success(`${result} — +${formatCoins(bet * mult)} (${mult.toFixed(2)}x)`);
     else toast.error(`${result} — better luck next period`);
   };
-
-  const potential = pick && drawn !== null ? null : null;
-  void potential;
 
   return (
     <div className="space-y-3">

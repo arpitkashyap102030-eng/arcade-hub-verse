@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { usePlayer, useSession } from "@/lib/player";
 import { formatCoins } from "@/lib/games";
 import wheelImg from "@/assets/wheel.png";
+import logo3cr from "@/assets/logo-3cr.png";
 
 function TopBar() {
   const { user } = useSession();

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import type { GameDef } from "@/lib/games";
 import { formatCoins, stepMultiplier } from "@/lib/games";
+import { playSfx } from "@/lib/sound";
 
 type Props = {
   game: GameDef;
@@ -25,6 +26,7 @@ export function TowerGame({ game, bet, balance, busy, settle }: Props) {
 
   const begin = () => {
     if (bet > balance) return toast.error("Not enough coins");
+    playSfx("start");
     setFloor(0);
     setRevealed({});
     setRunning(true);
@@ -41,6 +43,7 @@ export function TowerGame({ game, bet, balance, busy, settle }: Props) {
       return;
     }
 
+    playSfx("step");
     const next = floor + 1;
     setFloor(next);
     if (next >= floors) {

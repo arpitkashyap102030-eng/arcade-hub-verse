@@ -81,6 +81,7 @@ function TopBar() {
               {player ? formatCoins(player.balance) : "—"}
             </span>
           </Link>
+          <SoundToggle />
           <button
             onClick={() => supabase.auth.signOut()}
             aria-label="Sign out"

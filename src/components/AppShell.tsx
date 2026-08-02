@@ -91,7 +91,8 @@ function TopBar() {
           </button>
         </div>
       ) : (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <SoundToggle />
           <Link to="/auth" search={{ mode: "in" }} className="label-mono text-foreground">
             Sign In
           </Link>

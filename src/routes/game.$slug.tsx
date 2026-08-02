@@ -13,6 +13,7 @@ import { DiceGame } from "@/components/games/DiceGame";
 import { ColorGame } from "@/components/games/ColorGame";
 import { GAMES, getGame, formatCoins } from "@/lib/games";
 import { usePlayRound, usePlayer, useSession, useHistory } from "@/lib/player";
+import { playResult, playSfx } from "@/lib/sound";
 
 export const Route = createFileRoute("/game/$slug")({
   loader: ({ params }) => {
@@ -47,7 +48,9 @@ function GamePage() {
   const settle = async (multiplier: number, details: Record<string, unknown>) => {
     try {
       await play.mutateAsync({ game: slug, bet, multiplier, details });
+      playResult(multiplier);
     } catch (err) {
+      playSfx("error");
       toast.error(err instanceof Error ? err.message : "Round could not be recorded");
     }
   };

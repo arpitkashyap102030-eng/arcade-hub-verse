@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { formatCoins, HOUSE_EDGE } from "@/lib/games";
+import { playSfx } from "@/lib/sound";
 
 type Props = {
   bet: number;
@@ -19,6 +20,7 @@ export function DiceGame({ bet, balance, busy, settle }: Props) {
   const payout = Math.round((HOUSE_EDGE / chance) * 100) / 100;
 
   const play = async () => {
+    playSfx("reveal");
     if (bet > balance) return toast.error("Not enough coins");
     setRolling(true);
     const result = Math.round(Math.random() * 10000) / 100;

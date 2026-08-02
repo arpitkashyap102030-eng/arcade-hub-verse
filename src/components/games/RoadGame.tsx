@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import type { GameDef } from "@/lib/games";
 import { formatCoins, stepMultiplier } from "@/lib/games";
+import { playSfx } from "@/lib/sound";
 
 type Props = {
   game: GameDef;
@@ -24,6 +25,7 @@ export function RoadGame({ game, bet, balance, busy, settle }: Props) {
 
   const begin = () => {
     if (bet > balance) return toast.error("Not enough coins");
+    playSfx("start");
     setStep(0);
     setDead(false);
     setRunning(true);
@@ -39,6 +41,7 @@ export function RoadGame({ game, bet, balance, busy, settle }: Props) {
       toast.error(`Squashed on lane ${next}`);
       return;
     }
+    playSfx("step");
     setStep(next);
     if (next >= lanes) {
       const m = stepMultiplier(lanes, risk);

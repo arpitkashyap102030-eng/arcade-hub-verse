@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { formatCoins, minesMultiplier } from "@/lib/games";
+import { playSfx } from "@/lib/sound";
 
 type Props = {
   bet: number;
@@ -31,6 +32,7 @@ export function MinesGame({ bet, balance, busy, settle }: Props) {
 
   const begin = () => {
     if (bet > balance) return toast.error("Not enough coins");
+    playSfx("start");
     setField(pickBombs(bombs));
     setOpened([]);
     setBlown(null);
@@ -48,6 +50,7 @@ export function MinesGame({ bet, balance, busy, settle }: Props) {
       return;
     }
 
+    playSfx("step");
     const nextOpened = [...opened, i];
     setOpened(nextOpened);
 

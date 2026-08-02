@@ -172,6 +172,14 @@ function NavItem({
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    initSound();
+    const detach = attachGlobalClickSfx();
+    return () => {
+      detach();
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background pb-24">
       <TopBar />

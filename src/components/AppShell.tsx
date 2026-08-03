@@ -11,7 +11,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { usePlayer, useSession } from "@/lib/player";
+import { usePendingReferral, usePlayer, useSession } from "@/lib/player";
 import { formatCoins } from "@/lib/games";
 import {
   attachGlobalClickSfx,
@@ -52,6 +52,8 @@ function SoundToggle() {
 }
 
 function TopBar() {
+  usePendingReferral();
+
   const { user } = useSession();
   const { data: player } = usePlayer();
 

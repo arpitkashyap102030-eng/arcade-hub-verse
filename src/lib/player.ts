@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export type Player = {
   id: string;
@@ -10,6 +11,9 @@ export type Player = {
   total_wagered: number;
   total_won: number;
   last_bonus_at: string | null;
+  referral_code: string | null;
+  referred_by: string | null;
+  referral_count: number;
   created_at: string;
 };
 
@@ -131,6 +135,101 @@ export function usePublicWins() {
         .limit(12);
       if (error) throw error;
       return data ?? [];
+    },
+  });
+}
+
+/* ---------------- Referral (raffle code) ---------------- */
+
+export const REF_STORAGE_KEY = "3cr:ref";
+
+export function useReferralCode() {
+  const { user } = useSession();
+  return useQuery({
+    queryKey: ["referral-code", user?.id],
+    enabled: !!user,
+    staleTime: Infinity,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("get_referral_code");
+      if (error) throw error;
+      return data as string;
+    },
+  });
+}
+
+export function useClaimReferral() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (code: string) => {
+      const { data, error } = await supabase.rpc("claim_referral", { _code: code });
+      if (error) throw error;
+      return normalise(data as unknown as Record<string, unknown>);
+    },
+    onSuccess: (player) => {
+      if (player) qc.setQueryData(["player", player.id], player);
+      qc.invalidateQueries({ queryKey: ["player"] });
+    },
+  });
+}
+
+/** Captures ?ref=CODE from the URL and redeems it once the player is signed in. */
+export function usePendingReferral() {
+  const { data: player } = usePlayer();
+  const claim = useClaimReferral();
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const code = new URLSearchParams(window.location.search).get("ref");
+    if (code) localStorage.setItem(REF_STORAGE_KEY, code.toUpperCase());
+  }, []);
+
+  useEffect(() => {
+    if (done || !player || typeof window === "undefined") return;
+    const code = localStorage.getItem(REF_STORAGE_KEY);
+    if (!code) return;
+    setDone(true);
+    claim
+      .mutateAsync(code)
+      .then(() => {
+        localStorage.removeItem(REF_STORAGE_KEY);
+        toast.success("Invite bonus: +100 coins added!");
+      })
+      .catch(() => localStorage.removeItem(REF_STORAGE_KEY));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player, done]);
+}
+
+/* ---------------- Daily quests ---------------- */
+
+export function useQuestClaims() {
+  const { user } = useSession();
+  return useQuery({
+    queryKey: ["quest-claims", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("quest_claims")
+        .select("quest_key, reward, quest_date")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
+export function useClaimQuest() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (key: string) => {
+      const { data, error } = await supabase.rpc("claim_quest", { _key: key });
+      if (error) throw error;
+      return normalise(data as unknown as Record<string, unknown>);
+    },
+    onSuccess: (player) => {
+      if (player) qc.setQueryData(["player", player.id], player);
+      qc.invalidateQueries({ queryKey: ["quest-claims"] });
     },
   });
 }

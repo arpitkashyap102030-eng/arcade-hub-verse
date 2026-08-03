@@ -53,6 +53,9 @@ export type Database = {
           created_at: string
           id: string
           last_bonus_at: string | null
+          referral_code: string | null
+          referral_count: number
+          referred_by: string | null
           total_wagered: number
           total_won: number
           updated_at: string
@@ -63,6 +66,9 @@ export type Database = {
           created_at?: string
           id: string
           last_bonus_at?: string | null
+          referral_code?: string | null
+          referral_count?: number
+          referred_by?: string | null
           total_wagered?: number
           total_won?: number
           updated_at?: string
@@ -73,12 +79,23 @@ export type Database = {
           created_at?: string
           id?: string
           last_bonus_at?: string | null
+          referral_code?: string | null
+          referral_count?: number
+          referred_by?: string | null
           total_wagered?: number
           total_won?: number
           updated_at?: string
           username?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "players_referred_by_fkey"
+            columns: ["referred_by"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       public_wins: {
         Row: {
@@ -104,6 +121,41 @@ export type Database = {
         }
         Relationships: []
       }
+      quest_claims: {
+        Row: {
+          created_at: string
+          id: string
+          player_id: string
+          quest_date: string
+          quest_key: string
+          reward: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          player_id: string
+          quest_date?: string
+          quest_key: string
+          reward?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          player_id?: string
+          quest_date?: string
+          quest_key?: string
+          reward?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quest_claims_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -116,6 +168,53 @@ export type Database = {
           created_at: string
           id: string
           last_bonus_at: string | null
+          referral_code: string | null
+          referral_count: number
+          referred_by: string | null
+          total_wagered: number
+          total_won: number
+          updated_at: string
+          username: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      claim_quest: {
+        Args: { _key: string }
+        Returns: {
+          balance: number
+          created_at: string
+          id: string
+          last_bonus_at: string | null
+          referral_code: string | null
+          referral_count: number
+          referred_by: string | null
+          total_wagered: number
+          total_won: number
+          updated_at: string
+          username: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      claim_referral: {
+        Args: { _code: string }
+        Returns: {
+          balance: number
+          created_at: string
+          id: string
+          last_bonus_at: string | null
+          referral_code: string | null
+          referral_count: number
+          referred_by: string | null
           total_wagered: number
           total_won: number
           updated_at: string
@@ -135,6 +234,9 @@ export type Database = {
           created_at: string
           id: string
           last_bonus_at: string | null
+          referral_code: string | null
+          referral_count: number
+          referred_by: string | null
           total_wagered: number
           total_won: number
           updated_at: string
@@ -147,6 +249,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      get_referral_code: { Args: never; Returns: string }
       play_round: {
         Args: {
           _bet: number
@@ -159,6 +262,9 @@ export type Database = {
           created_at: string
           id: string
           last_bonus_at: string | null
+          referral_code: string | null
+          referral_count: number
+          referred_by: string | null
           total_wagered: number
           total_won: number
           updated_at: string

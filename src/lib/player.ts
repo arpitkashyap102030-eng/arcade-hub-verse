@@ -310,7 +310,7 @@ export function useWithdraw() {
       const { data, error } = await supabase.rpc("request_withdrawal", {
         _amount: amount,
         _method: method,
-        _note: note ?? null,
+        _note: note || undefined,
       });
       if (error) throw error;
       return normalise(data as unknown as Record<string, unknown>);

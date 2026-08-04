@@ -156,6 +156,47 @@ export type Database = {
           },
         ]
       }
+      wallet_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          kind: string
+          method: string
+          note: string | null
+          player_id: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          kind: string
+          method?: string
+          note?: string | null
+          player_id: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          kind?: string
+          method?: string
+          note?: string | null
+          player_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallet_transactions_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -250,6 +291,28 @@ export type Database = {
         }
       }
       get_referral_code: { Args: never; Returns: string }
+      make_deposit: {
+        Args: { _amount: number; _method?: string }
+        Returns: {
+          balance: number
+          created_at: string
+          id: string
+          last_bonus_at: string | null
+          referral_code: string | null
+          referral_count: number
+          referred_by: string | null
+          total_wagered: number
+          total_won: number
+          updated_at: string
+          username: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       play_round: {
         Args: {
           _bet: number
@@ -257,6 +320,28 @@ export type Database = {
           _game_slug: string
           _multiplier: number
         }
+        Returns: {
+          balance: number
+          created_at: string
+          id: string
+          last_bonus_at: string | null
+          referral_code: string | null
+          referral_count: number
+          referred_by: string | null
+          total_wagered: number
+          total_won: number
+          updated_at: string
+          username: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      request_withdrawal: {
+        Args: { _amount: number; _method?: string; _note?: string }
         Returns: {
           balance: number
           created_at: string

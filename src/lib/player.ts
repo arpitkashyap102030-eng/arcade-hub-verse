@@ -233,3 +233,91 @@ export function useClaimQuest() {
     },
   });
 }
+
+/* ---------------- Wallet: deposit & withdrawal ---------------- */
+
+export const MIN_DEPOSIT = 1000;
+export const MIN_WITHDRAW = 500;
+
+export type WalletTx = {
+  id: string;
+  kind: "deposit" | "withdraw";
+  amount: number;
+  method: string;
+  note: string | null;
+  status: string;
+  created_at: string;
+};
+
+export function useTransactions(limit = 40) {
+  const { user } = useSession();
+  return useQuery({
+    queryKey: ["wallet-tx", user?.id, limit],
+    enabled: !!user,
+    queryFn: async (): Promise<WalletTx[]> => {
+      const { data, error } = await supabase
+        .from("wallet_transactions")
+        .select("id, kind, amount, method, note, status, created_at")
+        .order("created_at", { ascending: false })
+        .limit(limit);
+      if (error) throw error;
+      return (data ?? []).map((r) => ({ ...r, amount: Number(r.amount) })) as WalletTx[];
+    },
+  });
+}
+
+/** Coins that came from real winnings or deposits — starting/bonus coins stay locked. */
+export function withdrawable(player: Player | null | undefined, txs: WalletTx[] | undefined) {
+  if (!player) return 0;
+  const dep = (txs ?? []).filter((t) => t.kind === "deposit").reduce((a, t) => a + t.amount, 0);
+  const wit = (txs ?? [])
+    .filter((t) => t.kind === "withdraw" && t.status !== "rejected")
+    .reduce((a, t) => a + t.amount, 0);
+  const profit = Math.max(player.total_won - player.total_wagered, 0);
+  return Math.max(0, Math.min(player.balance, profit + dep - wit));
+}
+
+export function useDeposit() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ amount, method }: { amount: number; method: string }) => {
+      const { data, error } = await supabase.rpc("make_deposit", {
+        _amount: amount,
+        _method: method,
+      });
+      if (error) throw error;
+      return normalise(data as unknown as Record<string, unknown>);
+    },
+    onSuccess: (player) => {
+      if (player) qc.setQueryData(["player", player.id], player);
+      qc.invalidateQueries({ queryKey: ["wallet-tx"] });
+    },
+  });
+}
+
+export function useWithdraw() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      amount,
+      method,
+      note,
+    }: {
+      amount: number;
+      method: string;
+      note?: string;
+    }) => {
+      const { data, error } = await supabase.rpc("request_withdrawal", {
+        _amount: amount,
+        _method: method,
+        _note: note || undefined,
+      });
+      if (error) throw error;
+      return normalise(data as unknown as Record<string, unknown>);
+    },
+    onSuccess: (player) => {
+      if (player) qc.setQueryData(["player", player.id], player);
+      qc.invalidateQueries({ queryKey: ["wallet-tx"] });
+    },
+  });
+}

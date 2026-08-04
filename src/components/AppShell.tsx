@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   Coins,
+  Plus,
   Grid3x3,
   Search,
   Ticket,
@@ -82,6 +83,14 @@ function TopBar() {
             <span className="font-mono text-sm font-bold text-primary">
               {player ? formatCoins(player.balance) : "—"}
             </span>
+          </Link>
+          <Link
+            to="/wallet"
+            aria-label="Deposit or withdraw coins"
+            className="flex items-center gap-1 rounded-md bg-accent px-2 py-1.5 font-display text-xs font-bold text-accent-foreground active:scale-95"
+          >
+            <Plus className="size-4" aria-hidden />
+            Add
           </Link>
           <SoundToggle />
           <button

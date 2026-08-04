@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
@@ -42,12 +42,34 @@ function GamePage() {
   const play = usePlayRound();
   const { data: history } = useHistory(8);
   const [bet, setBet] = useState(50);
+  const [cooldown, setCooldown] = useState(0);
+  const timer = useRef<number | null>(null);
+
+  useEffect(() => () => { if (timer.current) window.clearInterval(timer.current); }, []);
+
+  // Every game needs a 5 second breather before the next round can start.
+  const startCooldown = () => {
+    if (game.engine === "crash") return; // crash runs its own continuous round loop
+    setCooldown(5);
+    if (timer.current) window.clearInterval(timer.current);
+    timer.current = window.setInterval(() => {
+      setCooldown((c) => {
+        if (c <= 1 && timer.current) window.clearInterval(timer.current);
+        return Math.max(0, c - 1);
+      });
+    }, 1000);
+  };
 
   const balance = player?.balance ?? 0;
 
-  const settle = async (multiplier: number, details: Record<string, unknown>) => {
+  const settle = async (
+    multiplier: number,
+    details: Record<string, unknown>,
+    stake?: number,
+  ) => {
     try {
-      await play.mutateAsync({ game: slug, bet, multiplier, details });
+      await play.mutateAsync({ game: slug, bet: stake ?? bet, multiplier, details });
+      startCooldown();
       playResult(multiplier);
     } catch (err) {
       playSfx("error");
@@ -55,7 +77,7 @@ function GamePage() {
     }
   };
 
-  const engineProps = { bet, balance, busy: play.isPending, settle };
+  const engineProps = { bet, balance, busy: play.isPending || cooldown > 0, settle };
   const related = GAMES.filter((g) => g.slug !== slug).slice(0, 6);
 
   return (
@@ -111,6 +133,12 @@ function GamePage() {
               {game.engine === "mines" && <MinesGame {...engineProps} />}
               {game.engine === "dice" && <DiceGame {...engineProps} />}
               {game.engine === "color" && <ColorGame {...engineProps} />}
+
+              {cooldown > 0 && (
+                <p className="label-mono rounded-lg border border-border bg-surface-high py-2 text-center text-muted-foreground">
+                  Next round in {cooldown}s
+                </p>
+              )}
 
               <BetPanel bet={bet} onBet={setBet} balance={balance} disabled={play.isPending} />
             </>

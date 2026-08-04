@@ -134,6 +134,33 @@ function Home() {
         <JackpotCounter />
       </section>
 
+      {/* Colour Trading spotlight */}
+      <section className="mt-6 px-3">
+        <Link
+          to="/game/$slug"
+          params={{ slug: "color-trading" }}
+          className="flex items-center gap-3 overflow-hidden rounded-2xl border border-accent/40 bg-accent/10 p-3 active:scale-[0.98]"
+        >
+          <img
+            src={GAMES.find((g) => g.slug === "color-trading")?.image}
+            alt="Colour Trading"
+            loading="lazy"
+            width={512}
+            height={512}
+            className="size-20 rounded-xl border border-border object-cover"
+          />
+          <div className="min-w-0">
+            <span className="label-mono rounded-full bg-accent px-2 py-0.5 text-accent-foreground">
+              Live now
+            </span>
+            <h2 className="mt-1 font-display text-lg font-bold">Colour Trading</h2>
+            <p className="truncate text-xs text-muted-foreground">
+              Green, red or violet every period — up to 9x.
+            </p>
+          </div>
+        </Link>
+      </section>
+
       {/* Recent wins */}
       <section className="mt-8">
         <div className="mb-4 flex items-center gap-2 px-3">

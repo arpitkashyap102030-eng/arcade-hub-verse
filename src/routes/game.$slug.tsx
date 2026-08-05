@@ -91,7 +91,7 @@ function GamePage() {
                 "radial-gradient(circle at 90% 10%, var(--glow-primary), transparent 55%)",
             }}
           />
-          <div className="relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2">
+          <div className="relative grid grid-cols-[auto_auto_minmax(0,1fr)] items-center gap-2">
             <Link
               to="/"
               aria-label="Back to lobby"

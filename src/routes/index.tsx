@@ -34,24 +34,30 @@ function JackpotCounter() {
   const digits = String(pot).padStart(7, "0").split("");
 
   return (
-    <div className="flex flex-[1.5] flex-col rounded-lg border border-border bg-surface-high p-3">
-      <span className="label-mono w-max rounded border border-primary/70 bg-primary/15 px-2 py-1 text-primary">
-        Daily Jackpot
-      </span>
-      <div className="mt-4 flex items-center justify-center gap-0.5">
-        <span className="rounded-sm border border-border bg-surface-lowest px-1.5 py-1.5 font-display text-base font-bold">
-          🪙
-        </span>
+    <div className="relative flex flex-[1.4] min-w-0 flex-col overflow-hidden rounded-xl border border-primary/30 bg-surface-high p-2.5">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          backgroundImage: "radial-gradient(circle at 80% 0%, var(--glow-primary), transparent 60%)",
+        }}
+      />
+      <div className="relative flex items-center gap-1">
+        <Trophy className="size-3 shrink-0 text-primary" aria-hidden />
+        <span className="label-mono truncate text-[9px] text-primary">Daily jackpot</span>
+      </div>
+      <div className="relative mt-2 flex items-center justify-center gap-[2px]">
         {digits.map((d, i) => (
           <span
             key={i}
-            className="animate-tick rounded-sm bg-foreground px-1.5 py-1.5 font-mono text-lg font-bold leading-none text-background"
+            className="animate-tick rounded-[3px] bg-gradient-to-b from-foreground to-muted-foreground px-1 py-1 font-mono text-[13px] font-bold leading-none text-background"
           >
             {d}
           </span>
         ))}
       </div>
-      <p className="label-mono mt-3 text-center text-muted-foreground">Coins, not currency</p>
+      <p className="relative mt-2 truncate text-center text-[9px] text-muted-foreground">
+        Pool resets at midnight
+      </p>
     </div>
   );
 }

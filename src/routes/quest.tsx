@@ -41,9 +41,12 @@ function Quest() {
   const claim = useClaimQuest();
 
   const today = new Date().toDateString();
-  const rounds = (history ?? []).filter((h) => new Date(h.created_at).toDateString() === today);
+  const rounds = (history ?? []).filter(
+    (h) => new Date(h.created_at).toDateString() === today && h.game_slug !== "daily-bonus",
+  );
   const wagered = rounds.reduce((s, h) => s + Number(h.bet), 0);
   const bigWin = rounds.filter((h) => Number(h.multiplier) >= 3).length;
+  const wins = rounds.filter((h) => Number(h.payout) > Number(h.bet)).length;
   const games = new Set(rounds.map((h) => h.game_slug)).size;
 
   const todayIso = new Date().toISOString().slice(0, 10);
@@ -62,18 +65,22 @@ function Quest() {
   }
 
   const quests: Quest[] = [
-    { key: "check_in", label: "Daily check-in", hint: "Open the app today", now: 1, goal: 1, reward: 50 },
-    { key: "play_5", label: "Play 5 rounds", hint: "Any game counts", now: rounds.length, goal: 5, reward: 100 },
-    { key: "wager_500", label: "Wager 500 coins", hint: "Total bets today", now: wagered, goal: 500, reward: 150 },
-    { key: "big_win", label: "Hit a 3x or better", hint: "One big win today", now: bigWin, goal: 1, reward: 200 },
-    { key: "three_games", label: "Try 3 different games", hint: "Explore the lobby", now: games, goal: 3, reward: 150 },
-    { key: "play_20", label: "Marathon: 20 rounds", hint: "For the grinders", now: rounds.length, goal: 20, reward: 300 },
+    { key: "check_in", label: "Daily check-in", hint: "Open the app today", now: 1, goal: 1, reward: 20 },
+    { key: "play_1", label: "Play 1 round", hint: "Any game counts", now: rounds.length, goal: 1, reward: 20 },
+    { key: "two_games", label: "Try 2 different games", hint: "Mix it up", now: games, goal: 2, reward: 20 },
+    { key: "wager_200", label: "Wager 200 coins", hint: "Total bets today", now: wagered, goal: 200, reward: 20 },
+    { key: "play_5", label: "Play 5 rounds", hint: "Warm up", now: rounds.length, goal: 5, reward: 25 },
+    { key: "win_2", label: "Win 2 rounds", hint: "Two profitable rounds", now: wins, goal: 2, reward: 30 },
+    { key: "three_games", label: "Try 3 different games", hint: "Explore the lobby", now: games, goal: 3, reward: 30 },
+    { key: "big_win", label: "Hit a 3x or better", hint: "One big win today", now: bigWin, goal: 1, reward: 40 },
+    { key: "play_15", label: "Marathon: 15 rounds", hint: "For the grinders", now: rounds.length, goal: 15, reward: 50 },
   ];
 
   const totalToday = quests.reduce((s, q) => s + q.reward, 0);
   const claimedCoins = (claims ?? [])
     .filter((c) => c.quest_date === todayIso)
     .reduce((s, c) => s + Number(c.reward), 0);
+
 
   return (
     <AppShell>

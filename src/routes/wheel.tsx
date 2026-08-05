@@ -8,7 +8,7 @@ import { formatCoins } from "@/lib/games";
 import wheelImg from "@/assets/wheel.png";
 import { playSfx } from "@/lib/sound";
 
-const SEGMENTS = [100, 250, 500, 1700, 300, 150, 800, 400];
+const SEGMENTS = [10, 20, 20, 30, 50, 50, 75, 100];
 
 export const Route = createFileRoute("/wheel")({
   head: () => ({

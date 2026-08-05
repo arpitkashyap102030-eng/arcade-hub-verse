@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Clock, Flame } from "lucide-react";
+import { Clock, Coins, Flame, Trophy } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { CATEGORIES, GAMES, formatCoins, type Category } from "@/lib/games";
 import { usePlayer, usePublicWins, useSession } from "@/lib/player";
@@ -121,24 +121,33 @@ function Home() {
       </section>
 
       {/* Pots */}
-      <section className="mt-6 flex gap-2 px-3">
-        <div className="flex flex-1 flex-col rounded-lg border border-border bg-surface-high p-3">
-          <span className="label-mono text-muted-foreground">Your coins</span>
-          <div className="mt-2 flex flex-1 flex-col items-center justify-center">
-            <span className="text-3xl" aria-hidden>
-              🏆
-            </span>
-            <p className="mt-1 font-display text-lg font-bold text-accent">
-              {player ? formatCoins(player.balance) : "—"}
-            </p>
+      <section className="mt-5 flex gap-2 px-3">
+        <Link
+          to="/wallet"
+          className="relative flex min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-accent/30 bg-surface-high p-2.5 active:scale-[0.98]"
+        >
+          <div
+            className="pointer-events-none absolute inset-0 opacity-40"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 20% 0%, var(--glow-accent), transparent 60%)",
+            }}
+          />
+          <div className="relative flex items-center gap-1">
+            <Coins className="size-3 shrink-0 text-accent" aria-hidden />
+            <span className="label-mono truncate text-[9px] text-accent">Your coins</span>
           </div>
-          <div className="mt-2 flex items-center gap-1 text-[10px] text-muted-foreground">
-            <Clock className="size-3" aria-hidden />
+          <p className="relative mt-2 truncate text-center font-mono text-xl font-bold tabular-nums text-accent">
+            {player ? formatCoins(player.balance) : "—"}
+          </p>
+          <div className="relative mt-2 flex items-center justify-center gap-1 text-[9px] text-muted-foreground">
+            <Clock className="size-2.5 shrink-0" aria-hidden />
             <Countdown />
           </div>
-        </div>
+        </Link>
         <JackpotCounter />
       </section>
+
 
       {/* Colour Trading spotlight */}
       <section className="mt-6 px-3">

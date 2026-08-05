@@ -142,7 +142,7 @@ function BottomNav() {
           </div>
         </div>
         <span className="label-mono absolute -bottom-2 whitespace-nowrap rounded-full bg-primary px-2 py-0.5 text-[10px] text-primary-foreground">
-          Free 1700
+          Free spin
         </span>
       </Link>
 
@@ -187,9 +187,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-background pb-24">
       <TopBar />
-      <main className="mx-auto w-full max-w-2xl">{children}</main>
+      <main className="mx-auto w-full max-w-2xl overflow-x-hidden">{children}</main>
       <BottomNav />
     </div>
   );

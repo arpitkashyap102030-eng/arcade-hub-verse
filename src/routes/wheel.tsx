@@ -8,7 +8,7 @@ import { formatCoins } from "@/lib/games";
 import wheelImg from "@/assets/wheel.png";
 import { playSfx } from "@/lib/sound";
 
-const SEGMENTS = [100, 250, 500, 1700, 300, 150, 800, 400];
+const SEGMENTS = [10, 20, 20, 30, 50, 50, 75, 100];
 
 export const Route = createFileRoute("/wheel")({
   head: () => ({
@@ -16,10 +16,10 @@ export const Route = createFileRoute("/wheel")({
       { title: "Daily bonus wheel — 3CR Arcade" },
       {
         name: "description",
-        content: "Spin the free daily wheel once every 24 hours for up to 1,700 arcade coins.",
+        content: "Spin the free daily wheel once every 24 hours for 10 to 100 arcade coins.",
       },
       { property: "og:title", content: "Daily bonus wheel — 3CR Arcade" },
-      { property: "og:description", content: "One free spin every 24 hours. Virtual coins only." },
+      { property: "og:description", content: "One free spin every 24 hours — win 10 to 100 coins." },
     ],
   }),
   component: Wheel,

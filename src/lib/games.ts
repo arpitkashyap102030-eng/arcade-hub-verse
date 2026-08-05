@@ -9,6 +9,10 @@ import goRush from "@/assets/game-go-rush.jpg";
 import chickenDash from "@/assets/game-chicken-dash.jpg";
 import dice from "@/assets/game-dice.jpg";
 import colorTrading from "@/assets/game-color-trading.jpg";
+import spaceBlast from "@/assets/game-space-blast.jpg";
+import dragonTower from "@/assets/game-dragon-tower.jpg";
+import goldMiner from "@/assets/game-gold-miner.jpg";
+import balloon from "@/assets/game-balloon.jpg";
 
 export type Engine = "crash" | "road" | "tower" | "mines" | "dice" | "color";
 export type Category = "crash" | "table" | "hot" | "slot" | "live" | "fishing";
@@ -135,6 +139,46 @@ export const GAMES: GameDef[] = [
     categories: ["table", "hot", "live"],
     tagline: "Predict green, red or violet each period.",
     config: { icon: "🟢" },
+  },
+  {
+    slug: "space-blast",
+    name: "Space Blast",
+    studio: "3CR",
+    image: spaceBlast,
+    engine: "crash",
+    categories: ["crash", "hot"],
+    tagline: "Launch through the belt and bank it before the burn.",
+    config: { speed: 0.085, theme: "space", icon: "🚀" },
+  },
+  {
+    slug: "balloon",
+    name: "Balloon",
+    studio: "Smartsoft",
+    image: balloon,
+    engine: "crash",
+    categories: ["crash", "live"],
+    tagline: "Inflate the balloon — cash out before it pops.",
+    config: { speed: 0.05, theme: "balloon", icon: "🎈" },
+  },
+  {
+    slug: "dragon-tower",
+    name: "Dragon Tower",
+    studio: "Stake",
+    image: dragonTower,
+    engine: "tower",
+    categories: ["table", "hot"],
+    tagline: "Climb the dragon's tower, dodge the fire tile.",
+    config: { floors: 9, choices: 4, traps: 1, icon: "🐉" },
+  },
+  {
+    slug: "gold-miner",
+    name: "Gold Miner",
+    studio: "JILI",
+    image: goldMiner,
+    engine: "mines",
+    categories: ["table", "slot"],
+    tagline: "Dig gems from the gold cave, avoid the dynamite.",
+    config: { grid: 25, icon: "⛏️" },
   },
 ];
 

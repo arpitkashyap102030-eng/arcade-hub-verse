@@ -157,9 +157,9 @@ export function CrashGame({ game, bet, balance, busy, settle }: Props) {
   const crashed = phase === "crashed";
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div
-        className={`relative h-56 overflow-hidden rounded-xl border border-border bg-surface-lowest ${
+        className={`relative h-36 overflow-hidden rounded-xl border border-border bg-surface-lowest ${
           crashed ? "animate-shake" : ""
         }`}
       >
@@ -168,7 +168,7 @@ export function CrashGame({ game, bet, balance, busy, settle }: Props) {
           style={{
             backgroundImage:
               "linear-gradient(var(--color-hairline) 1px, transparent 1px), linear-gradient(90deg, var(--color-hairline) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
+            backgroundSize: "24px 24px",
           }}
         />
         <div
@@ -183,10 +183,10 @@ export function CrashGame({ game, bet, balance, busy, settle }: Props) {
           }}
         />
         <div
-          className="absolute text-3xl"
+          className="absolute text-2xl"
           style={{
             left: `calc(${progress * 82}% + 8px)`,
-            bottom: `calc(${progress * 74}% + 12px)`,
+            bottom: `calc(${progress * 74}% + 10px)`,
             transform: `rotate(${crashed ? 60 : -20}deg)`,
             filter: crashed ? "grayscale(1)" : "none",
           }}
@@ -199,15 +199,15 @@ export function CrashGame({ game, bet, balance, busy, settle }: Props) {
           <div className="text-center">
             {phase === "betting" ? (
               <>
-                <p className="font-display text-5xl font-extrabold tabular-nums text-accent">
+                <p className="font-display text-4xl font-extrabold tabular-nums text-accent">
                   {(countdown / 1000).toFixed(1)}s
                 </p>
-                <p className="label-mono mt-1 text-muted-foreground">Next round starting…</p>
+                <p className="label-mono mt-1 text-muted-foreground">Next round…</p>
               </>
             ) : (
               <>
                 <p
-                  className={`font-display text-5xl font-extrabold tabular-nums ${
+                  className={`font-display text-4xl font-extrabold tabular-nums ${
                     crashed ? "text-destructive" : "text-primary text-glow"
                   }`}
                 >
@@ -220,24 +220,24 @@ export function CrashGame({ game, bet, balance, busy, settle }: Props) {
             )}
           </div>
         </div>
+
+        {last.length > 0 && (
+          <div className="no-scrollbar absolute inset-x-0 top-0 flex gap-1 overflow-x-auto bg-gradient-to-b from-surface-lowest to-transparent px-2 py-1.5">
+            {last.slice(0, 8).map((m, i) => (
+              <span
+                key={i}
+                className={`label-mono shrink-0 rounded-full px-1.5 py-1 text-[9px] ${
+                  m >= 2 ? "bg-accent/20 text-accent" : "bg-surface-high text-muted-foreground"
+                }`}
+              >
+                {m.toFixed(2)}x
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
-      {last.length > 0 && (
-        <div className="no-scrollbar flex gap-1.5 overflow-x-auto">
-          {last.map((m, i) => (
-            <span
-              key={i}
-              className={`label-mono shrink-0 rounded-full px-2.5 py-1.5 ${
-                m >= 2 ? "bg-accent/15 text-accent" : "bg-surface-high text-muted-foreground"
-              }`}
-            >
-              {m.toFixed(2)}x
-            </span>
-          ))}
-        </div>
-      )}
-
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid grid-cols-2 gap-1.5">
         {slots.map((s, i) => (
           <BetSlot
             key={i}
@@ -285,15 +285,19 @@ function BetSlot({
   const locked = slot.active || slot.queued;
 
   return (
-    <div className="rounded-xl border border-border bg-surface-low p-3">
-      <div className="mb-2 flex items-center justify-between">
-        <span className="label-mono text-muted-foreground">Bet {index + 1}</span>
+    <div className="min-w-0 rounded-xl border border-border bg-surface-low p-2">
+      <div className="mb-1.5 flex min-w-0 items-center justify-between gap-1">
+        <span className="label-mono shrink-0 text-[9px] text-muted-foreground">
+          Bet {index + 1}
+        </span>
         {slot.cashedAt !== null && (
-          <span className="label-mono text-accent">Cashed {slot.cashedAt.toFixed(2)}x</span>
+          <span className="label-mono truncate text-[9px] text-accent">
+            {slot.cashedAt.toFixed(2)}x
+          </span>
         )}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex min-w-0 items-center gap-1">
         <input
           type="number"
           inputMode="numeric"
@@ -301,28 +305,28 @@ function BetSlot({
           disabled={locked}
           onChange={(e) => onStake(Number(e.target.value))}
           aria-label={`Stake for bet ${index + 1}`}
-          className="h-11 min-w-0 flex-1 rounded-lg border border-border bg-surface-lowest px-3 text-center font-mono text-base font-bold text-accent outline-none focus:ring-2 focus:ring-ring disabled:opacity-60"
+          className="h-9 min-w-0 flex-1 rounded-md border border-border bg-surface-lowest px-1 text-center font-mono text-sm font-bold text-accent outline-none focus:ring-2 focus:ring-ring disabled:opacity-60"
         />
         <input
           type="number"
           inputMode="decimal"
-          placeholder="Auto x"
+          placeholder="Auto"
           value={slot.auto}
           disabled={locked}
           onChange={(e) => onAuto(e.target.value)}
           aria-label={`Auto cash out for bet ${index + 1}`}
-          className="h-11 w-20 rounded-lg border border-border bg-surface-lowest px-2 text-center font-mono text-sm text-muted-foreground outline-none focus:ring-2 focus:ring-ring disabled:opacity-60"
+          className="h-9 w-12 shrink-0 rounded-md border border-border bg-surface-lowest px-1 text-center font-mono text-xs text-muted-foreground outline-none focus:ring-2 focus:ring-ring disabled:opacity-60"
         />
       </div>
 
-      <div className="mt-2 grid grid-cols-4 gap-1.5">
+      <div className="mt-1.5 grid grid-cols-4 gap-1">
         {[10, 50, 100, 500].map((c) => (
           <button
             key={c}
             type="button"
             disabled={locked}
             onClick={() => onStake(c)}
-            className="label-mono rounded-md border border-border bg-surface-high py-1.5 text-muted-foreground disabled:opacity-40"
+            className="label-mono rounded border border-border bg-surface-high py-1 text-[9px] text-muted-foreground disabled:opacity-40"
           >
             {c}
           </button>
@@ -333,15 +337,15 @@ function BetSlot({
         <button
           onClick={onCash}
           disabled={busy}
-          className="mt-2 h-12 w-full rounded-xl bg-primary font-display text-base font-bold text-primary-foreground active:scale-[0.98] disabled:opacity-60"
+          className="mt-1.5 h-10 w-full truncate rounded-lg bg-primary px-1 font-display text-xs font-bold text-primary-foreground active:scale-[0.98] disabled:opacity-60"
         >
-          Cash out {formatCoins(slot.stake * mult)}
+          Cash {formatCoins(slot.stake * mult)}
         </button>
       ) : (
         <button
           onClick={onQueue}
           disabled={slot.active || slot.stake > balance}
-          className={`mt-2 h-12 w-full rounded-xl font-display text-base font-bold active:scale-[0.98] disabled:opacity-50 ${
+          className={`mt-1.5 h-10 w-full truncate rounded-lg px-1 font-display text-xs font-bold active:scale-[0.98] disabled:opacity-50 ${
             slot.queued
               ? "border border-accent bg-accent/20 text-accent"
               : "bg-accent text-accent-foreground"
@@ -349,13 +353,13 @@ function BetSlot({
         >
           {slot.active
             ? slot.cashedAt !== null
-              ? "Waiting for next round"
+              ? "Next round"
               : "In play"
             : slot.stake > balance
-              ? "Not enough coins"
+              ? "Low coins"
               : slot.queued
-                ? "Cancel (queued)"
-                : `Bet ${formatCoins(slot.stake)}`}
+                ? "Cancel"
+                : `Bet ${slot.stake}`}
         </button>
       )}
     </div>

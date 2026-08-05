@@ -82,16 +82,8 @@ function GamePage() {
 
   return (
     <AppShell>
-      <div className="px-3 py-4">
-        <Link
-          to="/"
-          className="mb-3 inline-flex items-center gap-1.5 text-sm text-muted-foreground"
-        >
-          <ArrowLeft className="size-4" aria-hidden />
-          Lobby
-        </Link>
-
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-surface-low p-3">
+      <div className="px-2 py-3">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-surface-low p-2">
           <div
             className="pointer-events-none absolute inset-0 opacity-30"
             style={{
@@ -99,30 +91,29 @@ function GamePage() {
                 "radial-gradient(circle at 90% 10%, var(--glow-primary), transparent 55%)",
             }}
           />
-          <div className="relative flex items-center gap-3">
+          <div className="relative grid grid-cols-[auto_auto_minmax(0,1fr)] items-center gap-2">
+            <Link
+              to="/"
+              aria-label="Back to lobby"
+              className="grid size-8 shrink-0 place-items-center rounded-lg border border-border text-muted-foreground"
+            >
+              <ArrowLeft className="size-4" aria-hidden />
+            </Link>
             <img
               src={game.image}
               alt=""
               width={512}
               height={512}
-              className="size-16 rounded-xl border border-border object-cover shadow-[var(--shadow-glow)]"
+              className="size-9 shrink-0 rounded-lg border border-border object-cover"
             />
-            <div className="min-w-0">
-              <h1 className="truncate font-display text-2xl font-extrabold">{game.name}</h1>
-              <p className="truncate text-xs text-muted-foreground">
-                {game.studio} · {game.tagline}
-              </p>
-              {user && (
-                <span className="label-mono mt-1.5 inline-block rounded-full border border-accent/50 bg-accent/15 px-2 py-1 text-accent">
-                  Balance {formatCoins(balance)}
-                </span>
-              )}
+            <div className="min-w-0 flex-1">
+              <h1 className="truncate font-display text-base font-extrabold">{game.name}</h1>
+              <p className="truncate text-[10px] text-muted-foreground">{game.studio}</p>
             </div>
           </div>
         </div>
 
-
-        <div className="mt-4 space-y-3">
+        <div className="mt-2 space-y-2">
           {!user ? (
             <SignInGate what={`play ${game.name}`} />
           ) : (
@@ -140,10 +131,13 @@ function GamePage() {
                 </p>
               )}
 
-              <BetPanel bet={bet} onBet={setBet} balance={balance} disabled={play.isPending} />
+              {game.engine !== "crash" && (
+                <BetPanel bet={bet} onBet={setBet} balance={balance} disabled={play.isPending} />
+              )}
             </>
           )}
         </div>
+
 
         {history && history.length > 0 && (
           <section className="mt-6">

@@ -59,50 +59,45 @@ function TopBar() {
   const { data: player } = usePlayer();
 
   return (
-    <header className="sticky top-0 z-50 flex h-14 w-full items-center justify-between border-b border-border bg-background px-3">
-      <Link to="/" className="flex items-center gap-2">
+    <header className="sticky top-0 z-50 grid h-12 w-full max-w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-border bg-background px-2">
+      <Link to="/" className="flex min-w-0 items-center gap-1.5">
         <img
           src={logo3cr}
           alt="3CR Arcade"
           width={96}
           height={40}
-          className="h-8 w-auto object-contain"
+          className="h-6 w-auto shrink-0 object-contain"
         />
-        <span className="label-mono rounded-sm bg-surface-high px-1.5 py-1 text-muted-foreground">
-          Arcade
-        </span>
       </Link>
 
       {user ? (
-        <div className="flex items-center gap-2">
-          <Link
-            to="/wallet"
-            className="flex items-center gap-1.5 rounded-md border border-border bg-surface-high px-2.5 py-1.5"
-          >
-            <Coins className="size-4 text-primary" aria-hidden />
-            <span className="font-mono text-sm font-bold text-primary">
-              {player ? formatCoins(player.balance) : "—"}
-            </span>
-          </Link>
-          <Link
-            to="/wallet"
-            aria-label="Deposit or withdraw coins"
-            className="flex items-center gap-1 rounded-md bg-accent px-2 py-1.5 font-display text-xs font-bold text-accent-foreground active:scale-95"
-          >
-            <Plus className="size-4" aria-hidden />
-            Add
-          </Link>
+        <div className="flex shrink-0 items-center gap-1">
+          <div className="flex items-center overflow-hidden rounded-full border border-border bg-surface-high">
+            <Link to="/wallet" className="flex items-center gap-1 py-1 pl-2 pr-1.5">
+              <Coins className="size-3.5 shrink-0 text-primary" aria-hidden />
+              <span className="font-mono text-xs font-bold tabular-nums text-primary">
+                {player ? formatCoins(player.balance) : "—"}
+              </span>
+            </Link>
+            <Link
+              to="/wallet"
+              aria-label="Deposit or withdraw coins"
+              className="grid h-7 w-7 place-items-center bg-accent text-accent-foreground active:scale-95"
+            >
+              <Plus className="size-3.5" aria-hidden />
+            </Link>
+          </div>
           <SoundToggle />
           <button
             onClick={() => supabase.auth.signOut()}
             aria-label="Sign out"
-            className="rounded-md border border-border p-2 text-muted-foreground transition-colors hover:text-foreground"
+            className="rounded-md p-1.5 text-muted-foreground transition-colors hover:text-foreground"
           >
             <LogOut className="size-4" aria-hidden />
           </button>
         </div>
       ) : (
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1.5">
           <SoundToggle />
           <Link to="/auth" search={{ mode: "in" }} className="label-mono text-foreground">
             Sign In
@@ -110,7 +105,7 @@ function TopBar() {
           <Link
             to="/auth"
             search={{ mode: "up" }}
-            className="label-mono rounded-md bg-primary px-4 py-2 text-primary-foreground active:scale-95"
+            className="label-mono rounded-md bg-primary px-3 py-1.5 text-primary-foreground active:scale-95"
           >
             Sign Up
           </Link>
@@ -147,7 +142,7 @@ function BottomNav() {
           </div>
         </div>
         <span className="label-mono absolute -bottom-2 whitespace-nowrap rounded-full bg-primary px-2 py-0.5 text-[10px] text-primary-foreground">
-          Free 1700
+          Free spin
         </span>
       </Link>
 
@@ -192,9 +187,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-background pb-24">
       <TopBar />
-      <main className="mx-auto w-full max-w-2xl">{children}</main>
+      <main className="mx-auto w-full max-w-2xl overflow-x-hidden">{children}</main>
       <BottomNav />
     </div>
   );

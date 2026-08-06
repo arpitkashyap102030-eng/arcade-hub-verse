@@ -30,11 +30,10 @@ export function UpdateGate() {
   return (
     <Dialog open>
       <DialogContent
-        showCloseButton={false}
         onEscapeKeyDown={(e) => e.preventDefault()}
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
-        className="max-w-[340px] rounded-2xl border-primary/40 bg-surface-low shadow-[var(--shadow-glow)]"
+        className="max-w-[340px] rounded-2xl border-primary/40 bg-surface-low shadow-[var(--shadow-glow)] [&>button]:hidden"
       >
         <DialogHeader className="items-center text-center">
           <div className="animate-glow mb-2 grid size-14 place-items-center rounded-full border border-primary/50 bg-primary/15">

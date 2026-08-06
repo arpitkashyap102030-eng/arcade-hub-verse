@@ -1,16 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { ArrowDownToLine, ArrowUpFromLine, Copy, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { SignInGate } from "@/components/SignInGate";
+import { useAppConfig } from "@/lib/app-config";
 import {
   MIN_DEPOSIT,
   MIN_WITHDRAW,
-  useDeposit,
+  useDepositRequests,
   useHistory,
   usePlayer,
   useSession,
+  useSubmitUtr,
   useTransactions,
   useWithdraw,
   withdrawable,

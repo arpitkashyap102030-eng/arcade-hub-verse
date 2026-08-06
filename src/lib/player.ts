@@ -277,20 +277,46 @@ export function withdrawable(player: Player | null | undefined, txs: WalletTx[] 
   return Math.max(0, Math.min(player.balance, profit + dep - wit));
 }
 
-export function useDeposit() {
+export type DepositRequest = {
+  id: string;
+  amount: number;
+  utr: string;
+  method: string;
+  status: string;
+  created_at: string;
+};
+
+export function useDepositRequests(limit = 20) {
+  const { user } = useSession();
+  return useQuery({
+    queryKey: ["deposit-requests", user?.id, limit],
+    enabled: !!user,
+    queryFn: async (): Promise<DepositRequest[]> => {
+      const { data, error } = await supabase
+        .from("deposit_requests")
+        .select("id, amount, utr, method, status, created_at")
+        .order("created_at", { ascending: false })
+        .limit(limit);
+      if (error) throw error;
+      return (data ?? []).map((r) => ({ ...r, amount: Number(r.amount) })) as DepositRequest[];
+    },
+  });
+}
+
+/** Submits a UPI reference (UTR) for review. Format + duplicate checks run in the database. */
+export function useSubmitUtr() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ amount, method }: { amount: number; method: string }) => {
-      const { data, error } = await supabase.rpc("make_deposit", {
+    mutationFn: async ({ amount, utr }: { amount: number; utr: string }) => {
+      const { data, error } = await supabase.rpc("submit_deposit_utr", {
         _amount: amount,
-        _method: method,
+        _utr: utr,
       });
       if (error) throw error;
-      return normalise(data as unknown as Record<string, unknown>);
+      return data;
     },
-    onSuccess: (player) => {
-      if (player) qc.setQueryData(["player", player.id], player);
-      qc.invalidateQueries({ queryKey: ["wallet-tx"] });
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["deposit-requests"] });
     },
   });
 }

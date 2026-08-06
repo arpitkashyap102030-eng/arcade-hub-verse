@@ -68,12 +68,12 @@ function Quest() {
     { key: "check_in", label: "Daily check-in", hint: "Open the app today", now: 1, goal: 1, reward: 20 },
     { key: "play_1", label: "Play 1 round", hint: "Any game counts", now: rounds.length, goal: 1, reward: 20 },
     { key: "two_games", label: "Try 2 different games", hint: "Mix it up", now: games, goal: 2, reward: 20 },
-    { key: "wager_200", label: "Wager 200 coins", hint: "Total bets today", now: wagered, goal: 200, reward: 20 },
-    { key: "play_5", label: "Play 5 rounds", hint: "Warm up", now: rounds.length, goal: 5, reward: 25 },
-    { key: "win_2", label: "Win 2 rounds", hint: "Two profitable rounds", now: wins, goal: 2, reward: 30 },
-    { key: "three_games", label: "Try 3 different games", hint: "Explore the lobby", now: games, goal: 3, reward: 30 },
-    { key: "big_win", label: "Hit a 3x or better", hint: "One big win today", now: bigWin, goal: 1, reward: 40 },
-    { key: "play_15", label: "Marathon: 15 rounds", hint: "For the grinders", now: rounds.length, goal: 15, reward: 50 },
+    { key: "wager_200", label: "Wager 200 coins", hint: "Total bets today", now: wagered, goal: 200, reward: 50 },
+    { key: "play_5", label: "Play 5 rounds", hint: "Warm up", now: rounds.length, goal: 5, reward: 50 },
+    { key: "win_2", label: "Win 2 rounds", hint: "Two profitable rounds", now: wins, goal: 2, reward: 50 },
+    { key: "three_games", label: "Try 3 different games", hint: "Explore the lobby", now: games, goal: 3, reward: 50 },
+    { key: "big_win", label: "Hit a 3x or better", hint: "One big win today", now: bigWin, goal: 1, reward: 100 },
+    { key: "play_15", label: "Marathon: 15 rounds", hint: "For the grinders", now: rounds.length, goal: 15, reward: 100 },
   ];
 
   const totalToday = quests.reduce((s, q) => s + q.reward, 0);

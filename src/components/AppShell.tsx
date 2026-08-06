@@ -23,6 +23,7 @@ import {
 } from "@/lib/sound";
 import wheelImg from "@/assets/wheel.png";
 import logo3cr from "@/assets/logo-3cr.png";
+import { UpdateGate } from "@/components/UpdateGate";
 
 function SoundToggle() {
   const [on, setOn] = useState(true);
@@ -187,10 +188,11 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-background pb-24">
+    <div className="flex min-h-dvh w-full max-w-full flex-col overflow-x-hidden bg-background pb-28">
       <TopBar />
-      <main className="mx-auto w-full max-w-2xl overflow-x-hidden">{children}</main>
+      <main className="mx-auto w-full max-w-2xl flex-1 overflow-x-hidden">{children}</main>
       <BottomNav />
+      <UpdateGate />
     </div>
   );
 }

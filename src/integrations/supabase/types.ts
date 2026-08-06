@@ -14,6 +14,86 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_config: {
+        Row: {
+          apk_url: string
+          created_at: string
+          force_update: boolean
+          id: number
+          latest_version: string
+          release_notes: string | null
+          updated_at: string
+          upi_id: string
+          upi_payee_name: string
+        }
+        Insert: {
+          apk_url?: string
+          created_at?: string
+          force_update?: boolean
+          id?: number
+          latest_version?: string
+          release_notes?: string | null
+          updated_at?: string
+          upi_id?: string
+          upi_payee_name?: string
+        }
+        Update: {
+          apk_url?: string
+          created_at?: string
+          force_update?: boolean
+          id?: number
+          latest_version?: string
+          release_notes?: string | null
+          updated_at?: string
+          upi_id?: string
+          upi_payee_name?: string
+        }
+        Relationships: []
+      }
+      deposit_requests: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          method: string
+          player_id: string
+          reviewed_at: string | null
+          status: string
+          updated_at: string
+          utr: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          method?: string
+          player_id: string
+          reviewed_at?: string | null
+          status?: string
+          updated_at?: string
+          utr: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          method?: string
+          player_id?: string
+          reviewed_at?: string | null
+          status?: string
+          updated_at?: string
+          utr?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deposit_requests_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       game_rounds: {
         Row: {
           bet: number
@@ -358,6 +438,26 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      submit_deposit_utr: {
+        Args: { _amount: number; _utr: string }
+        Returns: {
+          amount: number
+          created_at: string
+          id: string
+          method: string
+          player_id: string
+          reviewed_at: string | null
+          status: string
+          updated_at: string
+          utr: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "deposit_requests"
           isOneToOne: true
           isSetofReturn: false
         }

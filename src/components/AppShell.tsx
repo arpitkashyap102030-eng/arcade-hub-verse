@@ -23,6 +23,7 @@ import {
 } from "@/lib/sound";
 import wheelImg from "@/assets/wheel.png";
 import logo3cr from "@/assets/logo-3cr.png";
+import { UpdateGate } from "@/components/UpdateGate";
 
 function SoundToggle() {
   const [on, setOn] = useState(true);

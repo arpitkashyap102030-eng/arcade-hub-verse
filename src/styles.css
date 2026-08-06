@@ -106,14 +106,19 @@
     color-scheme: dark;
     -webkit-tap-highlight-color: transparent;
     overflow-x: hidden;
+    overflow-y: auto;
+    height: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    overscroll-behavior-y: none;
     overflow-x: hidden;
+    overflow-y: visible;
+    height: auto;
+    min-height: 100dvh;
     max-width: 100vw;
   }
 
